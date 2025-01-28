@@ -26,8 +26,18 @@ func (a *App) shutdown(ctx context.Context) {
 	// Perform cleanup tasks here
 }
 
+// interface
+
 func (a *App) LoadFromDB() string {
 	return projecthandler.LoadDataFromDB()
+}
+
+func (a *App) CreateNewProject(name string) {
+	projecthandler.CreateNewProject(name)
+}
+
+func (a *App) DeleteProject(id string) {
+	projecthandler.DeleteProjectFromId(id)
 }
 
 // Greet returns a greeting for the given name

@@ -4,19 +4,37 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"strconv"
+	"sync"
+	"time"
 	// "path/filepath"
 )
 
 var INSTALLATION_PATH string // needs to be in a config that is written during installation
 var DATABASE_DIR string
+var CONF_DIR string
 var JSON_FILE_PATH string
+var COUNTER_FILE string
+
+var mutex sync.Mutex
 
 //datamodel
 
 func init() {
 	INSTALLATION_PATH = "D:/Programming/TestDir"
 	DATABASE_DIR = "/data"
+	CONF_DIR = "/conf"
 	JSON_FILE_PATH = INSTALLATION_PATH + DATABASE_DIR + "/workspace.json"
+	COUNTER_FILE = INSTALLATION_PATH + CONF_DIR + "/counter.json"
+	err := checkIfConfDirectoryExists()
+	if err != nil {
+		fmt.Println(err.Error())
+	} else {
+		err = checkIfCounterFileExists()
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+	}
 }
 
 type Workspace struct {
@@ -24,6 +42,7 @@ type Workspace struct {
 }
 
 type Task struct {
+	Tid     string `json:"Tid"`
 	Name    string `json:"name"`
 	Status  string `json:"status"`
 	Alloted int    `json:"alloted"`
@@ -31,16 +50,39 @@ type Task struct {
 }
 
 type Project struct {
+	Pid      string `json:"pid"`
 	Name     string `json:"name"`
 	Tasklist []Task `json:"tasklist"`
 }
 
-func checkIfDirectoryExists() error {
+type counter struct {
+	Count int `json:"count"`
+}
+
+func checkIfDataDirectoryExists() error {
 	info, err := os.Stat(INSTALLATION_PATH + DATABASE_DIR)
 	if os.IsNotExist(err) {
 		err = os.MkdirAll(INSTALLATION_PATH+DATABASE_DIR, 0755)
 		if err != nil {
 			return fmt.Errorf("error creating directory at path %s", INSTALLATION_PATH+DATABASE_DIR)
+		}
+	} else if err != nil {
+		return fmt.Errorf("error checking if directory is present")
+	} else if !info.IsDir() {
+		return fmt.Errorf("not a directory")
+	} else {
+		//do nothing
+		return nil
+	}
+	return nil
+}
+
+func checkIfConfDirectoryExists() error {
+	info, err := os.Stat(INSTALLATION_PATH + CONF_DIR)
+	if os.IsNotExist(err) {
+		err = os.MkdirAll(INSTALLATION_PATH+CONF_DIR, 0755)
+		if err != nil {
+			return fmt.Errorf("error creating directory at path %s", INSTALLATION_PATH+CONF_DIR)
 		}
 	} else if err != nil {
 		return fmt.Errorf("error checking if directory is present")
@@ -85,9 +127,67 @@ func checkIfDataFileExists() error {
 	return nil
 }
 
+func checkIfCounterFileExists() error {
+	data := map[string]int{
+		"count": 0,
+	}
+
+	jsondata, err := json.MarshalIndent(data, "", " ")
+	if err != nil {
+		return fmt.Errorf("unable to convert counter data to json")
+	}
+	_, err = os.Stat(COUNTER_FILE)
+	if os.IsNotExist(err) {
+		file, err := os.Create(COUNTER_FILE)
+		if err != nil {
+			return fmt.Errorf("error creating conf counter file")
+		}
+		defer file.Close()
+
+		_, err = file.Write(jsondata)
+		if err != nil {
+			return fmt.Errorf("unable to write init json content into created file")
+		}
+
+	} else if err != nil {
+		return fmt.Errorf("error while checking file status")
+	} else {
+		return nil
+	}
+	return nil
+}
+
+func getCounterVal() int {
+	file, err := os.Open(COUNTER_FILE)
+	if err != nil {
+		panic("error while opening counter file")
+	}
+	defer file.Close()
+	var c counter
+
+	if err = json.NewDecoder(file).Decode(&c); err != nil {
+		panic("error decoding counter value")
+	}
+	return c.Count
+}
+
+func setCounterVal(count int) {
+	updatedCounter := map[string]int{
+		"count": count,
+	}
+	jsondata, err := json.MarshalIndent(updatedCounter, "", " ")
+	if err != nil {
+		panic("unable to convert counter data to json")
+	}
+	err = os.WriteFile(COUNTER_FILE, jsondata, 0755)
+	if err != nil {
+		panic("Unable to write into counter file")
+	}
+}
+
 func LoadDataFromDB() string {
 
-	err := checkIfDirectoryExists()
+	err := checkIfDataDirectoryExists()
 	if err != nil {
 		//handle this
 		fmt.Println("Failed to check if data directory exists")
@@ -116,6 +216,116 @@ func LoadDataFromDB() string {
 	return ""
 }
 
-// func Read() {
-// 	fmt.Println(INSTALLATION_PATH, JSON_FILE_PATH)
+// func padstring(s string, rl int, pc rune) string {
+
 // }
+
+func getProjectID() string {
+	//get timestamp
+	//read counter and increment by one, update counter
+	//combine to get id
+	ts := fmt.Sprintf("%d", time.Now().Unix())
+
+	mutex.Lock()
+	c := getCounterVal()
+	c = c + 1
+	setCounterVal(c)
+	mutex.Unlock()
+
+	c_str := strconv.Itoa(c)
+	project_id := fmt.Sprintf("%s-%s", ts, c_str)
+	return project_id
+}
+
+func getTaskId(pid string) string {
+	//get timestamp
+	//read counter and increment by one, update counter
+	//combine pid, timestamp and incremented counter value
+	ts := fmt.Sprintf("%d", time.Now().Unix())
+
+	mutex.Lock()
+	c := getCounterVal()
+	c = c + 1
+	setCounterVal(c)
+	mutex.Unlock()
+
+	c_str := strconv.Itoa(c)
+	task_id := fmt.Sprintf("%s-%s-%s", ts, pid, c_str)
+	return task_id
+}
+
+func CreateNewProject(name string) {
+	//getnewproject id
+	//create a new project with pid and name, empty task list
+	//read existing projects, append project to the list
+	//write back to file, assume locking
+	pid := getProjectID()
+	newproject := Project{
+		Pid:      pid,
+		Name:     name,
+		Tasklist: []Task{},
+	}
+
+	file, err := os.Open(JSON_FILE_PATH)
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+
+	var ws Workspace
+
+	if derr := json.NewDecoder(file).Decode(&ws); derr != nil {
+		panic(derr)
+	}
+
+	ws.Projectlist = append(ws.Projectlist, newproject)
+	updated, err := json.MarshalIndent(ws, "", " ")
+	if err != nil {
+		panic(err)
+	}
+	err = os.WriteFile(JSON_FILE_PATH, updated, 0755)
+	if err != nil {
+		panic("unable to update the new project")
+	}
+
+}
+
+func DeleteProjectFromId(id string) {
+	//get id
+	//read from file and find the project matching the id ; effiecient ??
+	//rewrite and load on frontend
+	file, err := os.Open(JSON_FILE_PATH)
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+
+	var ws Workspace
+
+	if derr := json.NewDecoder(file).Decode(&ws); derr != nil {
+		panic(derr)
+	}
+
+	// var found bool;
+	for i := 0; i < len(ws.Projectlist); i++ { //optimize using maps
+		if ws.Projectlist[i].Pid == id {
+			ws.Projectlist = append(ws.Projectlist[:i], ws.Projectlist[i+1:]...)
+			// found = true
+			break
+		}
+	}
+
+	updated, err := json.MarshalIndent(ws, "", " ")
+	if err != nil {
+		panic(err)
+	}
+	err = os.WriteFile(JSON_FILE_PATH, updated, 0755)
+	if err != nil {
+		panic("unable to update the new project")
+	}
+
+}
+
+func CreateNewTask() {
+	// getTaskId()
+}
