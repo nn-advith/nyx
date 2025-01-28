@@ -7,23 +7,23 @@ import { LogInfo, LogError } from "../wailsjs/runtime/runtime";
 import TitleBar from "./components/TitleBar";
 import ControlPanel from "./components/ControlPanel";
 import ProjectView from "./components/ProjectView";
+import ProjectForm from "./components/ProjectForm";
 
 function App() {
-  // const [resultText, setResultText] = useState("Please enter your name below 👇");
   const [projectList, setProjectList] = useState([]);
-
-  // const [name, setName] = useState('');
-  // const updateName = (e: any) => setName(e.target.value);
-  // const updateResultText = (result: string) => setResultText(result);
+  const [showProjectForm, setShowProjectForm] = useState(false);
 
   const loadFromDB = () => {
     LoadFromDB()
       .then((e) => {
         var jsondata = JSON.parse(e);
-        LogInfo("This is a test" + jsondata.projectlist.length);
-        setProjectList(jsondata.projectList);
+        setProjectList(jsondata.projectlist);
       })
       .catch((err) => LogError(err));
+  };
+
+  const showPF = () => {
+    setShowProjectForm(true);
   };
 
   useEffect(() => {
@@ -33,8 +33,14 @@ function App() {
   return (
     <div id="app" className="app">
       <TitleBar />
-      <ControlPanel />
-      <ProjectView projectList={projectList} />
+
+      <ControlPanel showPF={showPF} />
+      <ProjectView projectList={projectList} loadFromDB={loadFromDB} />
+      <ProjectForm
+        showProjectForm={showProjectForm}
+        setShowProjectForm={setShowProjectForm}
+        loadFromDB={loadFromDB}
+      />
     </div>
   );
 }

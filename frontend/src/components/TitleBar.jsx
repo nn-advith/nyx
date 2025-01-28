@@ -14,7 +14,7 @@ import {
 const TitleBar = () => {
   return (
     <>
-      <div className="title-bar draggable">
+      <div className="title-bar draggable" id="title-bar">
         <div className="title-name">Nyx</div>
         <div className="window-controls">
           <div className="window-icon minimize" onClick={WindowMinimise}>

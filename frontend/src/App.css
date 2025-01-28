@@ -30,6 +30,7 @@
     box-sizing: border-box;
     user-select: none;
     flex-grow: 0;
+    z-index: 10;
 }
 
 .title-name {
@@ -85,6 +86,7 @@
     box-sizing: border-box;
     flex-grow: 0;
     border-bottom: 1px solid rgb(40,40,40);
+    z-index: 5;
 }
 
 .control-ops {
@@ -111,6 +113,7 @@
     transition: all 0.2s ease-in-out;
     margin-left: 5px;
     margin-right: 5px;
+    user-select: none;
 }
 
 .cp-button:hover{
@@ -138,6 +141,8 @@
     padding: 30px;
     border-radius: 5px;
     overflow-y: auto; 
+    z-index: 5;
+    /* max-height: 90vh; */
 }
 
 .project-view::-webkit-scrollbar {
@@ -152,7 +157,7 @@
 
 .project-view::-webkit-scrollbar-thumb {
     background-color: rgb(40, 40, 40);
-    border-radius: 10px;
+    /* border-radius: 10px; */
     transition: 0.2s all ease;
 }
 
@@ -165,7 +170,8 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-
+    margin-bottom: 15px;
+    margin-top: 15px;
 }
 
 .project-info-bar {
@@ -193,6 +199,17 @@
     line-height: 20px;
 }
 
+.project-delete {
+    width: 100px;
+    height: 20px;
+    border-radius: 5px;
+    background-color: rgb(30, 30, 30);
+    border: 1px solid rgb(60,60,60);
+    margin-left: 5px;
+    margin-right: 5px;
+    line-height: 20px;
+}
+
 .task-section {
     width: 100%;
     display: grid;
@@ -209,3 +226,69 @@
 }
 
 /* task related css */
+
+/* project form related css */
+
+.project-form {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    height: 100%;
+    z-index : 7;
+}
+
+.pf-blur {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(20, 20, 20, 0.6);
+    z-index: 7;
+    backdrop-filter: blur(5px);
+}
+
+.pf-wrapper{
+    width: 50%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    background-color: rgb(30,30,30);
+    border-radius: 5px;
+    border: 1px solid rgb(60, 60, 60);
+    box-shadow: rgba(80, 80, 80, 0.35) 0px 5px 15px;
+    z-index: 8;
+}
+
+.pf-input {
+    box-sizing: border-box;
+    width: 100%;
+    height: 30px;
+    border-radius: 5px;
+    background-color: rgb(30, 30, 30);
+    border: 1px solid rgb(60,60,60);
+    margin-bottom: 10px;
+    padding: 10px;
+    color: rgb(255, 255, 255);
+}
+
+.pf-button {
+    width: 100px;
+    height: 20px;
+    background-color: rgb(30, 30, 30);
+    border: 1px solid rgb(60,60,60);
+    border-radius: 5px;
+    padding: 5px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    line-height: 20px;
+    transition: all 0.2s ease-in-out;
+    /* margin-left: 5px; */
+    /* margin-right: 5px; */
+    user-select: none;
+}
