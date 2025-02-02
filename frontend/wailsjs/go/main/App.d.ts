@@ -3,8 +3,14 @@
 
 export function CreateNewProject(arg1:string):Promise<void>;
 
+export function CreateNewTask(arg1:string,arg2:string,arg3:number):Promise<void>;
+
 export function DeleteProject(arg1:string):Promise<void>;
+
+export function DeleteTask(arg1:string):Promise<void>;
 
 export function Greet(arg1:string):Promise<string>;
 
 export function LoadFromDB():Promise<string>;
+
+export function UpdateTaskState(arg1:string,arg2:string):Promise<void>;

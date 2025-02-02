@@ -6,8 +6,16 @@ export function CreateNewProject(arg1) {
   return window['go']['main']['App']['CreateNewProject'](arg1);
 }
 
+export function CreateNewTask(arg1, arg2, arg3) {
+  return window['go']['main']['App']['CreateNewTask'](arg1, arg2, arg3);
+}
+
 export function DeleteProject(arg1) {
   return window['go']['main']['App']['DeleteProject'](arg1);
+}
+
+export function DeleteTask(arg1) {
+  return window['go']['main']['App']['DeleteTask'](arg1);
 }
 
 export function Greet(arg1) {
@@ -16,4 +24,8 @@ export function Greet(arg1) {
 
 export function LoadFromDB() {
   return window['go']['main']['App']['LoadFromDB']();
+}
+
+export function UpdateTaskState(arg1, arg2) {
+  return window['go']['main']['App']['UpdateTaskState'](arg1, arg2);
 }
