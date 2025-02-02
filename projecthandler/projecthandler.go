@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 	"sync"
 	"time"
 	// "path/filepath"
@@ -42,7 +43,7 @@ type Workspace struct {
 }
 
 type Task struct {
-	Tid     string `json:"Tid"`
+	Tid     string `json:"tid"`
 	Name    string `json:"name"`
 	Status  string `json:"status"`
 	Alloted int    `json:"alloted"`
@@ -326,6 +327,127 @@ func DeleteProjectFromId(id string) {
 
 }
 
-func CreateNewTask() {
+func CreateNewTask(pid string, name string, allotted int) {
 	// getTaskId()
+	//search for pid in project list
+	//create new task and append to tasklist of the project
+	//reload
+
+	newtaskid := getTaskId(pid)
+	newtask := Task{
+		Tid:     newtaskid,
+		Name:    name,
+		Status:  "pending",
+		Alloted: allotted,
+		Spent:   0,
+	}
+
+	var ws Workspace
+
+	file, err := os.Open(JSON_FILE_PATH)
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+
+	err = json.NewDecoder(file).Decode(&ws)
+	if err != nil {
+		panic("unable to decode from file")
+	}
+
+	for i := range len(ws.Projectlist) {
+		if ws.Projectlist[i].Pid == pid {
+			ws.Projectlist[i].Tasklist = append(ws.Projectlist[i].Tasklist, newtask)
+			break
+		}
+	}
+
+	updated, err := json.MarshalIndent(ws, "", " ")
+	if err != nil {
+		panic(err)
+	}
+	err = os.WriteFile(JSON_FILE_PATH, updated, 0755)
+	if err != nil {
+		panic("unable to update the new project")
+	}
+
+}
+
+func getPidFromTid(tid string) string {
+	return strings.Join(strings.Split(tid, "-")[1:3], "-")
+}
+
+func UpdateTaskState(tid string, newstate string) {
+	//find task with tid within pid
+	//update status and write back
+	var ws Workspace
+	pid := getPidFromTid(tid)
+	file, err := os.Open(JSON_FILE_PATH)
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+
+	err = json.NewDecoder(file).Decode(&ws)
+	if err != nil {
+		panic("unable to decode from file")
+	}
+
+	for i := range len(ws.Projectlist) {
+		if ws.Projectlist[i].Pid == pid {
+			for j := range len(ws.Projectlist[i].Tasklist) {
+				if ws.Projectlist[i].Tasklist[j].Tid == tid {
+					ws.Projectlist[i].Tasklist[j].Status = newstate
+					break
+				}
+			}
+			break
+		}
+	}
+
+	updated, err := json.MarshalIndent(ws, "", " ")
+	if err != nil {
+		panic(err)
+	}
+	err = os.WriteFile(JSON_FILE_PATH, updated, 0755)
+	if err != nil {
+		panic("unable to update the new project")
+	}
+
+}
+
+func DeleteTask(tid string) {
+	var ws Workspace
+	pid := getPidFromTid(tid)
+	file, err := os.Open(JSON_FILE_PATH)
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+
+	err = json.NewDecoder(file).Decode(&ws)
+	if err != nil {
+		panic("unable to decode from file")
+	}
+
+	for i := range len(ws.Projectlist) {
+		if ws.Projectlist[i].Pid == pid {
+			for j := range len(ws.Projectlist[i].Tasklist) {
+				if ws.Projectlist[i].Tasklist[j].Tid == tid {
+					ws.Projectlist[i].Tasklist = append(ws.Projectlist[i].Tasklist[:j], ws.Projectlist[i].Tasklist[j+1:]...)
+				}
+			}
+			break
+		}
+	}
+
+	updated, err := json.MarshalIndent(ws, "", " ")
+	if err != nil {
+		panic(err)
+	}
+	err = os.WriteFile(JSON_FILE_PATH, updated, 0755)
+	if err != nil {
+		panic("unable to update the new project")
+	}
+
 }
