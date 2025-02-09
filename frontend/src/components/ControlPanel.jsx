@@ -10,7 +10,7 @@ const ControlPanel = ({ showPF }) => {
           <div className="cp-button" onClick={showPF}>
             Create
           </div>
-          <div className="cp-filter-section"></div>
+          {/* <div className="cp-filter-section"></div> */}
         </div>
       </div>
     </>

@@ -38,12 +38,33 @@ const TaskSection = ({ taskList, pid, loadFromDB }) => {
 
           return newZones;
         });
+        loadFromDB();
       })
       .catch((err) => LogError(err));
   };
 
   const allowDrop = (event) => {
     event.preventDefault();
+  };
+
+  const addClassOnDrag = (event) => {
+    event.preventDefault();
+    if (!event.currentTarget.classList.contains("hovered-on")) {
+      event.currentTarget.classList.add("hovered-on");
+      event.currentTarget.classList.add(
+        event.currentTarget.getAttribute("zonename")
+      );
+    }
+  };
+
+  const removeClassOnDrag = (event) => {
+    event.preventDefault();
+    if (event.currentTarget.classList.contains("hovered-on")) {
+      event.currentTarget.classList.remove("hovered-on");
+      event.currentTarget.classList.remove(
+        event.currentTarget.getAttribute("zonename")
+      );
+    }
   };
 
   useEffect(() => {
@@ -64,9 +85,17 @@ const TaskSection = ({ taskList, pid, loadFromDB }) => {
         {Object.keys(zones).map((zone, index) => (
           <div
             key={index}
+            zonename={zone}
             className="task-column"
-            onDragOver={allowDrop}
-            onDrop={(e) => handleDrop(e, zone)}
+            onDragOver={(e) => {
+              allowDrop(e);
+              addClassOnDrag(e);
+            }}
+            onDragLeave={(e) => removeClassOnDrag(e)}
+            onDrop={(e) => {
+              handleDrop(e, zone);
+              removeClassOnDrag(e);
+            }}
           >
             {zones[zone]?.map((task, index) => (
               <Task

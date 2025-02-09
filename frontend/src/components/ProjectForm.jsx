@@ -5,10 +5,11 @@ const ProjectForm = ({ showProjectForm, setShowProjectForm, loadFromDB }) => {
   const wrapperRef = useRef();
 
   const [name, setName] = useState("");
+  const [deadline, setDeadline] = useState("31-03-2025");
 
   const createNewProject = () => {
     // showPF();
-    CreateNewProject(name)
+    CreateNewProject(name, deadline)
       .then(() => {
         setShowProjectForm(false);
         setName("");
@@ -42,7 +43,7 @@ const ProjectForm = ({ showProjectForm, setShowProjectForm, loadFromDB }) => {
           <div className="pf-blur"></div>
           <div className="pf-wrapper" ref={wrapperRef}>
             <input
-              type="text"
+              type="tezt"
               placeholder="Enter project name"
               value={name}
               className="pf-input"

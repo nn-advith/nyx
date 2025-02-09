@@ -2,6 +2,7 @@
     height: 100vh;
     display: flex;
     flex-direction: column;
+    position: relative;
     /* justify-content: space-between; */
 }
 
@@ -31,6 +32,7 @@
     user-select: none;
     flex-grow: 0;
     z-index: 10;
+    overflow: hidden;
 }
 
 .title-name {
@@ -55,14 +57,11 @@
     height: 35px;
     padding: 0.2rem;
     color: rgb(255, 255, 255);
-    background-color: rgb(20, 20, 20);
+    /* background-color: rgb(20, 20, 20); */
     transition: all 0.2s ease-in-out;
     cursor: pointer;
 }
 
-.minimize {
-    align-items:flex-start;
-}
 
 .window-icon:hover {
     background-color: rgb(40, 40, 40);
@@ -133,16 +132,115 @@
 
 /* project view related css */
 
+.legend * {
+    transition: 0.2s all ease-in-out;
+}
+
+.legend-simple * {
+    transition: 0.2s all ease-in-out;
+}
+
+.legend {
+    display: flex;
+    flex-direction: row;
+    position: sticky;
+    top:0;
+    width: 100%;
+    margin-bottom: 40px;
+    z-index: 6;
+
+}
+
+.legend-simple {
+    margin-bottom: 80px;
+    display: flex;
+    flex-direction: row;
+    position: sticky;
+    top:-10px;
+    z-index: 6;
+    margin-left: -30px;
+    width: calc(100% + 60px);
+    box-sizing: border-box;
+}
+
+
+.legend-bar {
+    border: 1px solid rgb(60,60,60);
+    flex:1;
+    margin: 5px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+
+.legend-bar-simple {
+    /* margin: 0; */
+    height: 5px;
+    flex: 1
+}
+
+.legend-bar-simple.pending {
+    background-color: rgb(147, 129, 255);
+}
+.legend-bar-simple.ongoing  {
+ background-color: rgb(184, 184, 255);
+}
+.legend-bar-simple.completed {
+    background-color: rgb(248, 247, 255);
+} 
+
+
+.legend-counter {
+    border-radius: 0 5px 5px 0;
+    padding: 5px;
+    width: 15%;
+    font-size: 0.8rem;
+    color: black;
+    font-weight: 800;
+}
+
+.legend-counter-simple {
+    display: none;
+}
+
+
+.legend-counter.pending {
+    background-color: rgb(147, 129, 255);
+}
+.legend-counter.ongoing {
+    background-color: rgb(184, 184, 255);
+}
+.legend-counter.completed {
+    background-color: rgb(248, 247, 255);
+}
+
+.legend-text {
+    font-weight: 500;
+    margin-left: 15px;
+    font-size: 0.8rem;
+    
+}
+
+.legend-text-simple {
+    display: none;
+}
+
+
+
 .project-view {
     width: calc(100%-30px);
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    padding: 30px;
-    border-radius: 5px;
+    padding: 10px 30px 30px 30px;
+    flex: 1;
     overflow-y: auto; 
     z-index: 5;
-    /* max-height: 90vh; */
+    position: relative;
+    overflow-x: hidden;
 }
 
 .project-view::-webkit-scrollbar {
@@ -152,17 +250,18 @@
 
 .project-view::-webkit-scrollbar-track {
     width: 8px;
-    background-color: rgb(20, 20, 20);
+    background-color: rgb(10, 10, 10);
+
 }
 
 .project-view::-webkit-scrollbar-thumb {
     background-color: rgb(40, 40, 40);
-    /* border-radius: 10px; */
+
     transition: 0.2s all ease;
 }
 
 .project-view::-webkit-scrollbar-thumb:hover {
-    background-color: rgb(60, 60, 60);
+    background-color: rgb(40, 40, 40);
     transition: 0.2s all ease;
 }
 
@@ -212,12 +311,103 @@
     cursor: pointer;
 }
 
+
+.menu-wrapper {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    align-items: center;
+    height: 25px;
+    overflow-x: hidden;
+}
+
+.menu-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.2s all ease;
+}
+
+.menu-buttons-closed {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    opacity: 0;
+    transform:translate(50px,0);
+    transition: 0.2s all ease;
+    pointer-events: none;
+}
+
+.menu-control {
+    height: 80%;
+    border-radius: 2px;
+    transition: 0.2s all ease;
+    background-color: rgb(150,150,150);
+    width: 6px;
+    cursor: pointer;
+    z-index: 4;
+    margin-left: 8px;
+}
+
+.menu-control:hover {
+   
+    transition: 0.2s all ease;
+    background-color: rgb(240,240,240);
+    
+    
+}
+
+.menu-control-closed {
+    background-color: rgb(240,240,240);
+    height: 80%;
+    border-radius: 2px;
+    transition: 0.2s all ease;
+    z-index: 4;
+    cursor: pointer;
+    width: 6px;
+    margin-left: 8px;
+    
+}
+
+.menu-control-closed:hover {
+    background-color: rgb(150,150,150);
+    transition: 0.2s all ease;
+}
+
+.menu-button-item {
+    margin: 0 10px;
+    cursor: pointer;
+    transition: 0.2s all ease;
+    color: rgb(255, 255, 255);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu-button-item:hover {
+    transition: 0.2s all ease;
+    opacity: 0.5;
+}
+
+
+.add-icon g {
+    fill: #fff;
+}
+.add-icon path {
+    stroke: #fff;
+}
+
+
+/* task section */
+
+
 .task-section {
     width: 100%;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: 1fr;
-    gap: 10px;
     margin-top: 10px
     /* background-color: beige; */
 }
@@ -225,15 +415,77 @@
 .task-column {
 
     padding: 5px;
-    
+    position: relative;
     text-align: center;
     border: 1px solid rgb(40, 40, 40);  
+    transition: 0.2s all ease-in-out;
+}
+
+.task-column.hovered-on {
+    transition: 0.2s all ease-in-out;
+    /* background-color: rgb(60, 60, 60); */
+}
+
+.task-column.hovered-on.pending {
+    transition: 0.2s all ease-in-out;
+    background-color: rgb(147, 129, 255);
+    /* opacity: 0.5; */
+}
+
+.task-column.hovered-on.ongoing {
+    transition: 0.2s all ease-in-out;
+    background-color: rgb(184, 184, 255);
+}
+
+.task-column.hovered-on.completed {
+    transition: 0.2s all ease-in-out;
+    background-color: rgb(248, 247, 255);
 }
 
 .task-item {
     border-radius: 5px;
-    background-color: red;
+    box-sizing: border-box; 
+    padding: 10px 10px;   
+    background-color: rgb(16, 16, 16);
+    border: 1px solid rgb(60, 60, 60);
     margin: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.task-name {
+    font-size: 0.8rem;
+    box-sizing: border-box;
+    padding: 5px;
+    text-align: left;
+    max-width:80%;
+}
+
+.task-status-circle {
+    width: 15px;
+    aspect-ratio: 1/1;
+    border-radius: 20px;
+    background-color: rgb(255,202,78);
+}
+
+
+.task-item:active {
+    cursor: grabbing;
+    /* transform: scale(1.1); */
+}
+
+.zone-header {
+    display: none;
+    pointer-events: none;
+    z-index: -10;
+}
+
+.zone-header.show {
+    z-index: -10;
+    pointer-events: none;
+    display: inline;
 }
 
 /* task related css */
