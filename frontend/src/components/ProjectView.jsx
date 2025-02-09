@@ -10,6 +10,8 @@ const ProjectView = ({
   setProjectId,
   setShowTaskForm,
   taskCount,
+  setShowDeleteForm,
+  setDeleteRefName,
 }) => {
   const contentRef = useRef();
   const [scrolled, setScrolled] = useState(false);
@@ -46,6 +48,8 @@ const ProjectView = ({
               loadFromDB={loadFromDB}
               setProjectId={setProjectId}
               setShowTaskForm={setShowTaskForm}
+              setShowDeleteForm={setShowDeleteForm}
+              setDeleteRefName={setDeleteRefName}
             />
           ))
         ) : (

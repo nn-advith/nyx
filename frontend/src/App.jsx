@@ -3,12 +3,14 @@ import "./App.css";
 import { LoadFromDB } from "../wailsjs/go/main/App";
 
 import { LogInfo, LogError } from "../wailsjs/runtime/runtime";
+import { DeleteProject } from "../wailsjs/go/main/App";
 
 import TitleBar from "./components/TitleBar";
 import ControlPanel from "./components/ControlPanel";
 import ProjectView from "./components/ProjectView";
 import ProjectForm from "./components/ProjectForm";
 import ProjectTaskForm from "./components/ProjectTaskForm";
+import DeleteConfirmForm from "./components/DeleteConfirmForm";
 
 function App() {
   const [projectList, setProjectList] = useState([]);
@@ -20,8 +22,11 @@ function App() {
   });
 
   const [showProjectForm, setShowProjectForm] = useState(false);
-  const [projectId, setProjectId] = useState(null);
   const [showTaskForm, setShowTaskForm] = useState(false);
+  const [showDeleteForm, setShowDeleteForm] = useState(false);
+  const [deleteRefName, setDeleteRefName] = useState(null);
+
+  const [projectId, setProjectId] = useState(null);
 
   const loadFromDB = () => {
     LoadFromDB()
@@ -48,6 +53,16 @@ function App() {
     setTaskCount(newcounts);
   };
 
+  const deleteProject = () => {
+    //call delete on wails backend
+
+    DeleteProject(projectId)
+      .then(() => {
+        loadFromDB();
+      })
+      .catch((err) => LogError(err));
+  };
+
   const showPF = () => {
     setShowProjectForm(true);
   };
@@ -70,6 +85,8 @@ function App() {
         setProjectId={setProjectId}
         setShowTaskForm={setShowTaskForm}
         taskCount={taskCount}
+        setShowDeleteForm={setShowDeleteForm}
+        setDeleteRefName={setDeleteRefName}
       />
       <ProjectForm
         showProjectForm={showProjectForm}
@@ -82,6 +99,14 @@ function App() {
         setProjectId={setProjectId}
         pid={projectId}
         loadFromDB={loadFromDB}
+      />
+      <DeleteConfirmForm
+        setShowDeleteForm={setShowDeleteForm}
+        showDeleteForm={showDeleteForm}
+        deleteRefName={deleteRefName}
+        setDeleteRefName={setDeleteRefName}
+        deleteProject={deleteProject}
+        setProjectId={setProjectId}
       />
     </div>
   );

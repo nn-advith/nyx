@@ -19,10 +19,10 @@ const Task = ({ task, handleDragStart, zone, loadFromDB }) => {
         onDragStart={(e) => {
           handleDragStart(e, task.tid, zone);
         }}
-        onContextMenu={(e) => {
-          e.preventDefault();
-          handleDelete(task.tid);
-        }}
+        // onContextMenu={(e) => {
+        //   e.preventDefault();
+        //   handleDelete(task.tid);
+        // }}
       >
         <div className="task-name">{task.name}</div>
 

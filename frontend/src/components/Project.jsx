@@ -7,7 +7,14 @@ import TaskSection from "./TaskSection";
 import ProjectTaskForm from "./ProjectTaskForm";
 import ProjectMenu from "./ProjectMenu";
 
-const Project = ({ project, loadFromDB, setShowTaskForm, setProjectId }) => {
+const Project = ({
+  project,
+  loadFromDB,
+  setShowTaskForm,
+  setProjectId,
+  setShowDeleteForm,
+  setDeleteRefName,
+}) => {
   // const [showTaskForm, setShowTaskForm] = useState(false);
 
   const deleteProject = () => {
@@ -27,9 +34,12 @@ const Project = ({ project, loadFromDB, setShowTaskForm, setProjectId }) => {
           <div className="project-name">{project.name}</div>
           <ProjectMenu
             deleteProject={deleteProject}
+            setShowDeleteForm={setShowDeleteForm}
             setShowTaskForm={setShowTaskForm}
             pid={project.pid}
             setProjectId={setProjectId}
+            setDeleteRefName={setDeleteRefName}
+            pname={project.name}
           />
         </div>
         <TaskSection

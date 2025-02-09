@@ -4,7 +4,15 @@ import { FaRegEdit } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 import { MdDeleteOutline } from "react-icons/md";
 
-const ProjectMenu = ({ deleteProject, setShowTaskForm, pid, setProjectId }) => {
+const ProjectMenu = ({
+  // deleteProject,
+  setShowTaskForm,
+  pid,
+  pname,
+  setProjectId,
+  setShowDeleteForm,
+  setDeleteRefName,
+}) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -26,7 +34,9 @@ const ProjectMenu = ({ deleteProject, setShowTaskForm, pid, setProjectId }) => {
           <div
             className="menu-button-item"
             onClick={() => {
-              deleteProject();
+              setShowDeleteForm(true);
+              setDeleteRefName(pname);
+              setProjectId(pid);
               setMenuOpen(false);
             }}
           >
