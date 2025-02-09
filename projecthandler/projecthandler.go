@@ -43,16 +43,18 @@ type Workspace struct {
 }
 
 type Task struct {
-	Tid     string `json:"tid"`
-	Name    string `json:"name"`
-	Status  string `json:"status"`
-	Alloted int    `json:"alloted"`
-	Spent   int    `json:"spent"`
+	Tid      string `json:"tid"`
+	Name     string `json:"name"`
+	Status   string `json:"status"`
+	Created  string `json:"created"`
+	Deadline string `json:"deadline"`
 }
 
 type Project struct {
 	Pid      string `json:"pid"`
 	Name     string `json:"name"`
+	Created  string `json:"created"`
+	Deadline string `json:"deadline"`
 	Tasklist []Task `json:"tasklist"`
 }
 
@@ -255,15 +257,22 @@ func getTaskId(pid string) string {
 	return task_id
 }
 
-func CreateNewProject(name string) {
+func getTodayDate() string {
+	return time.Now().Format("2006-01-02")
+}
+
+func CreateNewProject(name string, deadline string) {
 	//getnewproject id
 	//create a new project with pid and name, empty task list
 	//read existing projects, append project to the list
 	//write back to file, assume locking
 	pid := getProjectID()
+	created := getTodayDate()
 	newproject := Project{
 		Pid:      pid,
 		Name:     name,
+		Created:  created,
+		Deadline: deadline,
 		Tasklist: []Task{},
 	}
 
@@ -327,19 +336,20 @@ func DeleteProjectFromId(id string) {
 
 }
 
-func CreateNewTask(pid string, name string, allotted int) {
+func CreateNewTask(pid string, name string, deadline string) {
 	// getTaskId()
 	//search for pid in project list
 	//create new task and append to tasklist of the project
 	//reload
 
 	newtaskid := getTaskId(pid)
+	created := getTodayDate()
 	newtask := Task{
-		Tid:     newtaskid,
-		Name:    name,
-		Status:  "pending",
-		Alloted: allotted,
-		Spent:   0,
+		Tid:      newtaskid,
+		Name:     name,
+		Status:   "pending",
+		Created:  created,
+		Deadline: deadline,
 	}
 
 	var ws Workspace

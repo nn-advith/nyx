@@ -22,7 +22,7 @@ func (a *App) startup(ctx context.Context) {
 }
 func (a *App) shutdown(ctx context.Context) {
 
-	fmt.Println("Application is shutting down!")
+	fmt.Println("Application is shutting down now")
 	// Perform cleanup tasks here
 }
 
@@ -32,16 +32,16 @@ func (a *App) LoadFromDB() string {
 	return projecthandler.LoadDataFromDB()
 }
 
-func (a *App) CreateNewProject(name string) {
-	projecthandler.CreateNewProject(name)
+func (a *App) CreateNewProject(name string, deadline string) {
+	projecthandler.CreateNewProject(name, deadline)
 }
 
 func (a *App) DeleteProject(id string) {
 	projecthandler.DeleteProjectFromId(id)
 }
 
-func (a *App) CreateNewTask(pid string, name string, allotted int) {
-	projecthandler.CreateNewTask(pid, name, allotted)
+func (a *App) CreateNewTask(pid string, name string, deadline string) {
+	projecthandler.CreateNewTask(pid, name, deadline)
 }
 
 func (a *App) UpdateTaskState(tid string, newstate string) {
