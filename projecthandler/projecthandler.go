@@ -8,6 +8,8 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"golang.org/x/sys/windows/registry"
 	// "path/filepath"
 )
 
@@ -21,8 +23,24 @@ var mutex sync.Mutex
 
 //datamodel
 
+func getInstallDirectory() string {
+	k, err := registry.OpenKey(registry.CURRENT_USER, `Software\Nyx`, registry.QUERY_VALUE)
+	if err != nil {
+		fmt.Println("Error opening registry:", err)
+		return "D:/Programming/TestDir"
+	}
+	defer k.Close()
+
+	installDir, _, err := k.GetStringValue("InstallDir")
+	if err != nil {
+		fmt.Println("Error reading InstallDir:", err)
+		return "D:/Programming/TestDir"
+	}
+	return installDir
+}
+
 func init() {
-	INSTALLATION_PATH = "D:/Programming/TestDir"
+	INSTALLATION_PATH = getInstallDirectory() // this shit needs to be updated from registry
 	DATABASE_DIR = "/data"
 	CONF_DIR = "/conf"
 	JSON_FILE_PATH = INSTALLATION_PATH + DATABASE_DIR + "/workspace.json"
