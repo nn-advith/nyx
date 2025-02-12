@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"os/user"
 	"strconv"
 	"strings"
 	"sync"
@@ -23,24 +24,41 @@ var mutex sync.Mutex
 
 //datamodel
 
+func GetUsername() string {
+	currentUser, err := user.Current()
+	if err != nil {
+		return "UnknownUser"
+	}
+	parts := strings.Split(currentUser.Username, `\`)
+	return parts[len(parts)-1]
+}
+
 func getInstallDirectory() string {
 	k, err := registry.OpenKey(registry.CURRENT_USER, `Software\Nyx`, registry.QUERY_VALUE)
+	var dataDir string
 	if err != nil {
 		fmt.Println("Error opening registry:", err)
-		return "D:/Programming/TestDir"
+		dataDir = `C:\Users\` + GetUsername() + `\AppData\Roaming\Nyx`
+	} else {
+		defer k.Close()
+		dataDir, _, err = k.GetStringValue("DataDir")
+		if err != nil || dataDir == "" {
+			fmt.Println("Error reading DataDir from registry, using default.")
+			dataDir = `C:\Users\` + GetUsername() + `\AppData\Roaming\Nyx`
+		}
 	}
-	defer k.Close()
 
-	installDir, _, err := k.GetStringValue("InstallDir")
-	if err != nil {
-		fmt.Println("Error reading InstallDir:", err)
-		return "D:/Programming/TestDir"
+	// Ensure the directory is created
+	if err := os.MkdirAll(dataDir, 0755); err != nil {
+		fmt.Println("Failed to create data directory:", err)
 	}
-	return installDir
+	return dataDir
 }
 
 func init() {
-	INSTALLATION_PATH = getInstallDirectory() // this shit needs to be updated from registry
+	INSTALLATION_PATH = getInstallDirectory()
+	// _ = os.MkdirAll(INSTALLATION_PATH, 0755)
+	// INSTALLATION_PATH = "D:/Programming/TestDir" // this shit needs to be updated from registry
 	DATABASE_DIR = "/data"
 	CONF_DIR = "/conf"
 	JSON_FILE_PATH = INSTALLATION_PATH + DATABASE_DIR + "/workspace.json"
@@ -421,9 +439,9 @@ func UpdateTaskState(tid string, newstate string) {
 		panic("unable to decode from file")
 	}
 
-	for i := range len(ws.Projectlist) {
+	for i := range ws.Projectlist {
 		if ws.Projectlist[i].Pid == pid {
-			for j := range len(ws.Projectlist[i].Tasklist) {
+			for j := range ws.Projectlist[i].Tasklist {
 				if ws.Projectlist[i].Tasklist[j].Tid == tid {
 					ws.Projectlist[i].Tasklist[j].Status = newstate
 					break
@@ -449,7 +467,7 @@ func DeleteTask(tid string) {
 	pid := getPidFromTid(tid)
 	file, err := os.Open(JSON_FILE_PATH)
 	if err != nil {
-		panic(err)
+		panic("err here 1")
 	}
 	defer file.Close()
 
@@ -458,11 +476,12 @@ func DeleteTask(tid string) {
 		panic("unable to decode from file")
 	}
 
-	for i := range len(ws.Projectlist) {
+	for i := range ws.Projectlist {
 		if ws.Projectlist[i].Pid == pid {
-			for j := range len(ws.Projectlist[i].Tasklist) {
+			for j := range ws.Projectlist[i].Tasklist {
 				if ws.Projectlist[i].Tasklist[j].Tid == tid {
 					ws.Projectlist[i].Tasklist = append(ws.Projectlist[i].Tasklist[:j], ws.Projectlist[i].Tasklist[j+1:]...)
+					break
 				}
 			}
 			break
@@ -471,7 +490,7 @@ func DeleteTask(tid string) {
 
 	updated, err := json.MarshalIndent(ws, "", " ")
 	if err != nil {
-		panic(err)
+		panic("err here 2")
 	}
 	err = os.WriteFile(JSON_FILE_PATH, updated, 0755)
 	if err != nil {
