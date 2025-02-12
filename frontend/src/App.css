@@ -6,6 +6,16 @@
     /* justify-content: space-between; */
 }
 
+.noselect {
+    -webkit-touch-callout: none; 
+      -webkit-user-select: none; 
+       -khtml-user-select: none; 
+         -moz-user-select: none; 
+          -ms-user-select: none; 
+              user-select: none; 
+}
+
+
 input::-webkit-calendar-picker-indicator {
     filter: invert(1);
 }
@@ -449,14 +459,20 @@ input::-webkit-calendar-picker-indicator {
 .task-item {
     border-radius: 5px;
     box-sizing: border-box; 
-    padding: 10px 10px;   
+    padding: 5px 10px;   
     background-color: rgb(16, 16, 16);
     border: 1px solid rgb(60, 60, 60);
     margin: 5px;
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.active{
+    background-color: rgb(184, 184, 255);
 }
 
 .task-name {
@@ -471,13 +487,55 @@ input::-webkit-calendar-picker-indicator {
     width: 15px;
     aspect-ratio: 1/1;
     border-radius: 20px;
-    background-color: rgb(255,202,78);
+    /* position: absolute;
+    top: 0;
+    right: 0;
+    margin: 10px; */
+    
+}
+
+.due {
+    background-color: rgb(255, 60,60);
+}
+.today {
+    background-color: rgb(255,202,78);;
+}
+.soon{
+    background-color: rgb(45, 255, 189);;
+}
+.distant {
+    background-color: transparent;
+}
+
+.task-text {
+    font-size: 0.7rem;
+    box-sizing: border-box;
+    margin: 0px 5px 5px 5px;
+    height: auto;
+    color: rgb(100,100,100);
+    text-align: left;
+    transition:  0.2s all ease;
+}
+
+.hidden {
+    height: 0px;
+    transition: 0.2s all ease;
+    overflow: hidden;
+    pointer-events: none;
 }
 
 
 .task-item:active {
     cursor: grabbing;
     /* transform: scale(1.1); */
+}
+
+.task-info {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .zone-header {
