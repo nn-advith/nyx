@@ -8,11 +8,12 @@ A simple project manager build using Golang, React and Wails. Track projects and
 
 ## Version
 
-[![Version][version-tag]]
+![Version][version-tag]
 
 ## Download
 
-Windows - [![Windows Installer][windows-installer-icon]][windows-installer-url]
+Download windows installer
+[![Windows Installer][windows-installer-icon]][windows-installer-url]
 
 [license-shield]: https://img.shields.io/badge/License-MIT-yellow.svg
 [license-url]: https://github.com/nn-advith/nyx/blob/dev/LICENSE
