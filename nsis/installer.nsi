@@ -4,7 +4,7 @@
 
 InstallDir "$PROGRAMFILES\${APPNAME}"  
 
-Outfile "${APPNAME}-Setup.exe"
+Outfile "..\package\${APPNAME}-Setup-1.0.0.exe"
 ShowInstDetails show
 RequestExecutionLevel admin
 
