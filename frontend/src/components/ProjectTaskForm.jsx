@@ -54,6 +54,7 @@ const ProjectTaskForm = ({
         <div className="project-form">
           <div className="pf-blur"></div>
           <div className="pf-wrapper" ref={wrapper}>
+            <div className="pf-info-message">Create Task</div>
             <input
               type="text"
               placeholder="Enter Task name"
