@@ -52,6 +52,10 @@ func (a *App) DeleteTask(tid string) {
 	projecthandler.DeleteTask(tid)
 }
 
+func (a *App) EditTask(tid string, name string, status string, deadline string) {
+	projecthandler.EditTask(tid, name, status, deadline)
+}
+
 // Greet returns a greeting for the given name
 func (a *App) Greet(name string) string {
 	return fmt.Sprintf("Hello %s, It's show time!", name)

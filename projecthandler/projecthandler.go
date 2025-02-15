@@ -467,7 +467,7 @@ func DeleteTask(tid string) {
 	pid := getPidFromTid(tid)
 	file, err := os.Open(JSON_FILE_PATH)
 	if err != nil {
-		panic("err here 1")
+		panic(err)
 	}
 	defer file.Close()
 
@@ -490,11 +490,49 @@ func DeleteTask(tid string) {
 
 	updated, err := json.MarshalIndent(ws, "", " ")
 	if err != nil {
-		panic("err here 2")
+		panic(err)
 	}
 	err = os.WriteFile(JSON_FILE_PATH, updated, 0755)
 	if err != nil {
 		panic("unable to update the new project")
 	}
 
+}
+
+func EditTask(tid string, name string, status string, deadline string) {
+	var ws Workspace
+	pid := getPidFromTid(tid)
+	file, err := os.Open(JSON_FILE_PATH)
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+
+	err = json.NewDecoder(file).Decode(&ws)
+	if err != nil {
+		panic("unable to decode from file")
+	}
+
+	for i := range ws.Projectlist {
+		if ws.Projectlist[i].Pid == pid {
+			for j := range ws.Projectlist[i].Tasklist {
+				if ws.Projectlist[i].Tasklist[j].Tid == tid {
+					ws.Projectlist[i].Tasklist[j].Name = name
+					ws.Projectlist[i].Tasklist[j].Status = status
+					ws.Projectlist[i].Tasklist[j].Deadline = deadline
+					break
+				}
+			}
+			break
+		}
+	}
+
+	updated, err := json.MarshalIndent(ws, "", " ")
+	if err != nil {
+		panic(err)
+	}
+	err = os.WriteFile(JSON_FILE_PATH, updated, 0755)
+	if err != nil {
+		panic("unable to update the new project")
+	}
 }
