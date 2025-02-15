@@ -1,3 +1,5 @@
+[![MIT License][license-shield]][license-url]
+
 # Nyx - 0.0.0
 
 ## About
