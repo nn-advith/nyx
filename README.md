@@ -15,8 +15,8 @@ A simple project manager build using Golang, React and Wails. Track projects and
 Download windows installer
 [![Windows Installer][windows-installer-icon]][windows-installer-url]
 
-[license-shield]: https://img.shields.io/badge/License-MIT-yellow.svg
+[license-shield]: https://img.shields.io/badge/Licence-MIT-yellow?style=for-the-badge
 [license-url]: https://github.com/nn-advith/nyx/blob/dev/LICENSE
 [windows-installer-url]: https://github.com/nn-advith/nyx/blob/dev/package/Nyx-Setup-1.0.0.exe
-[windows-installer-icon]: https://img.shields.io/badge/windows-installer-blue
-[version-tag]: https://img.shields.io/badge/version-1.0.0-green
+[windows-installer-icon]: https://img.shields.io/badge/windows-installer-blue?style=for-the-badge
+[version-tag]: https://img.shields.io/badge/version-1.0.0-green?style=for-the-badge
