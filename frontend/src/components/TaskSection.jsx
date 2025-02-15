@@ -3,7 +3,17 @@ import Task from "./Task";
 import { LogError, LogInfo } from "../../wailsjs/runtime/runtime";
 import { UpdateTaskState } from "../../wailsjs/go/main/App";
 
-const TaskSection = ({ taskList, pid, loadFromDB }) => {
+const TaskSection = ({
+  taskList,
+  pid,
+  loadFromDB,
+  menuOpenIn,
+  setMenuOpenIn,
+  setShowEditTaskForm,
+  setUpdateTaskDetails,
+}) => {
+  // const [showCMenu, setShowCMenu] = useState(false)
+
   const [zones, setZones] = useState({
     pending: [], //populate based on json data, all 3 zones
     ongoing: [],
@@ -104,6 +114,10 @@ const TaskSection = ({ taskList, pid, loadFromDB }) => {
                 task={task}
                 zone={zone}
                 loadFromDB={loadFromDB}
+                setMenuOpenIn={setMenuOpenIn}
+                menuOpenIn={menuOpenIn}
+                setShowEditTaskForm={setShowEditTaskForm}
+                setUpdateTaskDetails={setUpdateTaskDetails}
               />
             ))}
           </div>

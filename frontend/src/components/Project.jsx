@@ -14,6 +14,10 @@ const Project = ({
   setProjectId,
   setShowDeleteForm,
   setDeleteRefName,
+  menuOpenIn,
+  setMenuOpenIn,
+  setShowEditTaskForm,
+  setUpdateTaskDetails,
 }) => {
   // const [showTaskForm, setShowTaskForm] = useState(false);
 
@@ -46,6 +50,10 @@ const Project = ({
           taskList={project.tasklist}
           pid={project.pid}
           loadFromDB={loadFromDB}
+          menuOpenIn={menuOpenIn}
+          setMenuOpenIn={setMenuOpenIn}
+          setShowEditTaskForm={setShowEditTaskForm}
+          setUpdateTaskDetails={setUpdateTaskDetails}
         />
       </div>
     </>

@@ -12,8 +12,13 @@ const ProjectView = ({
   taskCount,
   setShowDeleteForm,
   setDeleteRefName,
+  setShowEditTaskForm,
+  setUpdateTaskDetails,
 }) => {
   const contentRef = useRef();
+
+  const [menuOpenIn, setMenuOpenIn] = useState(null);
+
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const handleScroll = () => {
@@ -50,6 +55,10 @@ const ProjectView = ({
               setShowTaskForm={setShowTaskForm}
               setShowDeleteForm={setShowDeleteForm}
               setDeleteRefName={setDeleteRefName}
+              menuOpenIn={menuOpenIn}
+              setMenuOpenIn={setMenuOpenIn}
+              setShowEditTaskForm={setShowEditTaskForm}
+              setUpdateTaskDetails={setUpdateTaskDetails}
             />
           ))
         ) : (

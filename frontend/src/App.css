@@ -6,6 +6,7 @@
     /* justify-content: space-between; */
 }
 
+
 .noselect {
     -webkit-touch-callout: none; 
       -webkit-user-select: none; 
@@ -538,6 +539,37 @@ input::-webkit-calendar-picker-indicator {
     align-items: center;
 }
 
+.task-menu {
+    width: 30%;
+    position: absolute;
+    background-color:rgb(40, 40, 40);
+    border: 1px solid rgb(60,60,60);
+    border-radius: 0 10px 10px 10px;
+    overflow: hidden;
+    z-index: 1;
+    /* padding: 10px; */
+}
+
+.task-menu-item {
+    padding: 10px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+}
+
+.task-menu-item:hover {
+    background-color: rgb(50,50,50);
+    transition: all 0.2s ease;
+}
+
+.task-menu-item.bb {
+    border-bottom: 1px solid rgb(60,60,60);
+}
+.task-menu-item.bt {
+    border-top: 1px solid rgb(60,60,60);
+}
+
 .zone-header {
     display: none;
     pointer-events: none;
@@ -648,3 +680,21 @@ input::-webkit-calendar-picker-indicator {
     font-size: 0.8rem;
 
 }
+
+.pf-dropdown{
+    width: 200px;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid rgb(60, 60, 60);
+    border-radius: 4px;
+    background-color: rgb(40,40,40);
+    cursor: pointer;
+    color: rgb(255,255,255);
+    font-size: 0.8rem;
+    margin-bottom: 10px;
+  }
+  
+  .pf-dropdown:focus {
+    /* border-color: #007bff; */
+    outline: none;
+  }

@@ -42,6 +42,7 @@ const ProjectForm = ({ showProjectForm, setShowProjectForm, loadFromDB }) => {
         <div className="project-form">
           <div className="pf-blur"></div>
           <div className="pf-wrapper" ref={wrapperRef}>
+            <div className="pf-info-message">Create Project</div>
             <input
               type="tezt"
               placeholder="Enter project name"

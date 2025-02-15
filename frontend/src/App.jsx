@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import { LoadFromDB } from "../wailsjs/go/main/App";
+import { EditTask, LoadFromDB } from "../wailsjs/go/main/App";
 
 import { LogInfo, LogError } from "../wailsjs/runtime/runtime";
 import { DeleteProject } from "../wailsjs/go/main/App";
@@ -11,6 +11,7 @@ import ProjectView from "./components/ProjectView";
 import ProjectForm from "./components/ProjectForm";
 import ProjectTaskForm from "./components/ProjectTaskForm";
 import DeleteConfirmForm from "./components/DeleteConfirmForm";
+import EditTaskForm from "./components/EditTaskForm";
 
 function App() {
   const [projectList, setProjectList] = useState([]);
@@ -25,6 +26,14 @@ function App() {
   const [showTaskForm, setShowTaskForm] = useState(false);
   const [showDeleteForm, setShowDeleteForm] = useState(false);
   const [deleteRefName, setDeleteRefName] = useState(null);
+
+  const [showEditTaskForm, setShowEditTaskForm] = useState(false);
+  const [updateTaskDetails, setUpdateTaskDetails] = useState({
+    tid: "",
+    name: "",
+    status: "",
+    deadline: "",
+  });
 
   const [projectId, setProjectId] = useState(null);
 
@@ -63,6 +72,20 @@ function App() {
       .catch((err) => LogError(err));
   };
 
+  const editTask = () => {
+    EditTask(
+      updateTaskDetails["tid"],
+      updateTaskDetails["name"],
+      updateTaskDetails["status"],
+      updateTaskDetails["deadline"]
+    )
+      .then(() => {
+        loadFromDB();
+        setShowEditTaskForm(false);
+      })
+      .catch((err) => LogError(err));
+  };
+
   const showPF = () => {
     setShowProjectForm(true);
   };
@@ -87,6 +110,8 @@ function App() {
         taskCount={taskCount}
         setShowDeleteForm={setShowDeleteForm}
         setDeleteRefName={setDeleteRefName}
+        setShowEditTaskForm={setShowEditTaskForm}
+        setUpdateTaskDetails={setUpdateTaskDetails}
       />
       <ProjectForm
         showProjectForm={showProjectForm}
@@ -107,6 +132,13 @@ function App() {
         setDeleteRefName={setDeleteRefName}
         deleteProject={deleteProject}
         setProjectId={setProjectId}
+      />
+      <EditTaskForm
+        showEditTaskForm={showEditTaskForm}
+        setShowEditTaskForm={setShowEditTaskForm}
+        editTask={editTask}
+        updateTaskDetails={updateTaskDetails}
+        setUpdateTaskDetails={setUpdateTaskDetails}
       />
     </div>
   );
