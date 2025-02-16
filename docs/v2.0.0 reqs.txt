@@ -19,6 +19,7 @@ v2.0.0 - Requirements and Features
     - reminder for tasks upcoming
     - consistent form for updating data; reusable
     - annotations / grouping projects using tags for ease of filtering or organising
+    - project level filtering for tasks
 
 5. Task level changes
     - task image on drag update
@@ -26,6 +27,8 @@ v2.0.0 - Requirements and Features
     - deadline calendar implementation  custom ( with css )
     - show status icon circle info on hover ( or alternative )
     - comments on tasks for more info
+    - auto remove completed tasks from view; add control to disable this if needed
+    
 
 6. Filtering and Search options ( check for data restructuring )
 
