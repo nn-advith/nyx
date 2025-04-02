@@ -336,6 +336,38 @@ func CreateNewProject(name string, deadline string) {
 
 }
 
+func EditProject(pid string, name string) {
+	// read from file and get the project corresponding to the id
+	// update the name and write back into the file
+
+	file, err := os.Open(JSON_FILE_PATH)
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+	var ws Workspace
+	if derr := json.NewDecoder(file).Decode(&ws); derr != nil {
+		panic(derr)
+	}
+
+	for i := range ws.Projectlist {
+		if ws.Projectlist[i].Pid == pid {
+			ws.Projectlist[i].Name = name
+			break
+		}
+	}
+
+	updated, err := json.MarshalIndent(ws, "", " ")
+	if err != nil {
+		panic(err)
+	}
+	err = os.WriteFile(JSON_FILE_PATH, updated, 0755)
+	if err != nil {
+		panic("unable to update the new project")
+	}
+
+}
+
 func DeleteProjectFromId(id string) {
 	//get id
 	//read from file and find the project matching the id ; effiecient ??
@@ -353,7 +385,7 @@ func DeleteProjectFromId(id string) {
 	}
 
 	// var found bool;
-	for i := 0; i < len(ws.Projectlist); i++ { //optimize using maps
+	for i := range ws.Projectlist { //optimize using maps
 		if ws.Projectlist[i].Pid == id {
 			ws.Projectlist = append(ws.Projectlist[:i], ws.Projectlist[i+1:]...)
 			// found = true
