@@ -36,6 +36,10 @@ func (a *App) CreateNewProject(name string, deadline string) {
 	projecthandler.CreateNewProject(name, deadline)
 }
 
+func (a *App) EditProject(id string, name string) {
+	projecthandler.EditProject(id, name)
+}
+
 func (a *App) DeleteProject(id string) {
 	projecthandler.DeleteProjectFromId(id)
 }

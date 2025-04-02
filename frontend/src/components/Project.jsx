@@ -18,6 +18,8 @@ const Project = ({
   setMenuOpenIn,
   setShowEditTaskForm,
   setUpdateTaskDetails,
+  setUpdateProjectDetails,
+  setShowEditProjectForm,
 }) => {
   // const [showTaskForm, setShowTaskForm] = useState(false);
 
@@ -44,6 +46,8 @@ const Project = ({
             setProjectId={setProjectId}
             setDeleteRefName={setDeleteRefName}
             pname={project.name}
+            setUpdateProjectDetails={setUpdateProjectDetails}
+            setShowEditProjectForm={setShowEditProjectForm}
           />
         </div>
         <TaskSection

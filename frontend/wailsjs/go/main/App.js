@@ -18,6 +18,10 @@ export function DeleteTask(arg1) {
   return window['go']['main']['App']['DeleteTask'](arg1);
 }
 
+export function EditProject(arg1, arg2) {
+  return window['go']['main']['App']['EditProject'](arg1, arg2);
+}
+
 export function EditTask(arg1, arg2, arg3, arg4) {
   return window['go']['main']['App']['EditTask'](arg1, arg2, arg3, arg4);
 }
