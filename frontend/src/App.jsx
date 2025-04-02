@@ -106,6 +106,7 @@ function App() {
   };
 
   useEffect(() => {
+    loadFromDB();
     const interval = setInterval(() => {
       loadFromDB();
     }, 60000);
