@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import { EditTask, LoadFromDB } from "../wailsjs/go/main/App";
+import { EditProject, EditTask, LoadFromDB } from "../wailsjs/go/main/App";
 
 import { LogInfo, LogError } from "../wailsjs/runtime/runtime";
 import { DeleteProject } from "../wailsjs/go/main/App";
@@ -12,6 +12,7 @@ import ProjectForm from "./components/ProjectForm";
 import ProjectTaskForm from "./components/ProjectTaskForm";
 import DeleteConfirmForm from "./components/DeleteConfirmForm";
 import EditTaskForm from "./components/EditTaskForm";
+import EditProjectForm from "./components/EditProjectForm";
 
 function App() {
   const [projectList, setProjectList] = useState([]);
@@ -28,11 +29,16 @@ function App() {
   const [deleteRefName, setDeleteRefName] = useState(null);
 
   const [showEditTaskForm, setShowEditTaskForm] = useState(false);
+  const [showEditProjectForm, setShowEditProjectForm] = useState(false);
   const [updateTaskDetails, setUpdateTaskDetails] = useState({
     tid: "",
     name: "",
     status: "",
     deadline: "",
+  });
+  const [updateProjectDetails, setUpdateProjectDetails] = useState({
+    name: "",
+    pid: "",
   });
 
   const [projectId, setProjectId] = useState(null);
@@ -86,12 +92,24 @@ function App() {
       .catch((err) => LogError(err));
   };
 
+  const editProject = () => {
+    EditProject(updateProjectDetails["pid"], updateProjectDetails["name"])
+      .then(() => {
+        loadFromDB();
+        setShowEditProjectForm(false);
+      })
+      .catch((err) => LogError(err));
+  };
+
   const showPF = () => {
     setShowProjectForm(true);
   };
 
   useEffect(() => {
-    loadFromDB();
+    const interval = setInterval(() => {
+      loadFromDB();
+    }, 60000);
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
@@ -112,6 +130,8 @@ function App() {
         setDeleteRefName={setDeleteRefName}
         setShowEditTaskForm={setShowEditTaskForm}
         setUpdateTaskDetails={setUpdateTaskDetails}
+        setUpdateProjectDetails={setUpdateProjectDetails}
+        setShowEditProjectForm={setShowEditProjectForm}
       />
       <ProjectForm
         showProjectForm={showProjectForm}
@@ -139,6 +159,13 @@ function App() {
         editTask={editTask}
         updateTaskDetails={updateTaskDetails}
         setUpdateTaskDetails={setUpdateTaskDetails}
+      />
+      <EditProjectForm
+        showEditProjectForm={showEditProjectForm}
+        setShowEditProjectForm={setShowEditProjectForm}
+        editProject={editProject}
+        updateProjectDetails={updateProjectDetails}
+        setUpdateProjectDetails={setUpdateProjectDetails}
       />
     </div>
   );

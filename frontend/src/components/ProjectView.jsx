@@ -14,6 +14,8 @@ const ProjectView = ({
   setDeleteRefName,
   setShowEditTaskForm,
   setUpdateTaskDetails,
+  setUpdateProjectDetails,
+  setShowEditProjectForm,
 }) => {
   const contentRef = useRef();
 
@@ -59,6 +61,8 @@ const ProjectView = ({
               setMenuOpenIn={setMenuOpenIn}
               setShowEditTaskForm={setShowEditTaskForm}
               setUpdateTaskDetails={setUpdateTaskDetails}
+              setUpdateProjectDetails={setUpdateProjectDetails}
+              setShowEditProjectForm={setShowEditProjectForm}
             />
           ))
         ) : (

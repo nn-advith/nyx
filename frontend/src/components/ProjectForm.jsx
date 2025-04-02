@@ -5,7 +5,7 @@ const ProjectForm = ({ showProjectForm, setShowProjectForm, loadFromDB }) => {
   const wrapperRef = useRef();
 
   const [name, setName] = useState("");
-  const [deadline, setDeadline] = useState("31-03-2025");
+  const [deadline, setDeadline] = useState("31-12-2040");
 
   const createNewProject = () => {
     // showPF();

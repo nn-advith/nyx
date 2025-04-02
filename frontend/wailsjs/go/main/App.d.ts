@@ -9,6 +9,8 @@ export function DeleteProject(arg1:string):Promise<void>;
 
 export function DeleteTask(arg1:string):Promise<void>;
 
+export function EditProject(arg1:string,arg2:string):Promise<void>;
+
 export function EditTask(arg1:string,arg2:string,arg3:string,arg4:string):Promise<void>;
 
 export function Greet(arg1:string):Promise<string>;

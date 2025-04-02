@@ -12,6 +12,8 @@ const ProjectMenu = ({
   setProjectId,
   setShowDeleteForm,
   setDeleteRefName,
+  setUpdateProjectDetails,
+  setShowEditProjectForm,
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -19,7 +21,16 @@ const ProjectMenu = ({
     <>
       <div className="menu-wrapper">
         <div className={menuOpen ? "menu-buttons" : "menu-buttons-closed"}>
-          <div className="menu-button-item">
+          <div
+            className="menu-button-item"
+            onClick={() => {
+              setShowEditProjectForm(true);
+              setUpdateProjectDetails({
+                name: pname,
+                pid: pid,
+              });
+            }}
+          >
             <FaRegEdit />
           </div>
           <div
