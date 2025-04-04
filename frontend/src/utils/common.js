@@ -5,6 +5,6 @@ export const taskStatusCode = (deadline) => {
   const dline = new Date(deadline);
   dline.setHours(0, 0, 0, 0);
   const diff = dline - date;
-  const days = Math.round(diff / (1000 * 60 * 60 * 24)) + 1;
+  const days = Math.round(diff / (1000 * 60 * 60 * 24));
   return days;
 };
