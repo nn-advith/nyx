@@ -1,5 +1,6 @@
 frontend/node_modules
 build/bin
+docs/
 frontend/dist
 frontend/wailsjs
 frontend/package.json.md5

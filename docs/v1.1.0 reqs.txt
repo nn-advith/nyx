@@ -1,4 +1,0 @@
-Nyx - Project Tracker
-v1.1.0 - Features
-
-1. Edit project info feature 
